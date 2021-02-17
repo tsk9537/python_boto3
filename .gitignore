@@ -1,0 +1,5 @@
+**/logs
+*.log
+try*.py
+logs/
+debug*.log
