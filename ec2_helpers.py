@@ -10,12 +10,12 @@ def get_ec2_description():
     return response
 
 
-def toggle_ec2_monitoring(toggle='ON'):
+def toggle_ec2_monitoring(instance_id, toggle='ON'):
     ec2 = boto3.client('ec2')
     if toggle == 'ON':
-        response = ec2.monitor_instances(InstanceIds=['INSTANCE_ID'])
+        response = ec2.monitor_instances(InstanceIds=[instance_id])
     else:
-        response = ec2.unmonitor_instances(InstanceIds=['INSTANCE_ID'])
+        response = ec2.unmonitor_instances(InstanceIds=[instance_id])
 
     print(response)
 
@@ -84,7 +84,7 @@ def create_ec2_key_pair(key_pair_name):
 
 def delete_ec2_key_pair(key_pair_name):
     ec2 = boto3.client('ec2')
-    response = ec2.delete_key_pair(KeyName='KEY_PAIR_NAME')
+    response = ec2.delete_key_pair(KeyName=key_pair_name)
     print(response)
 
 
