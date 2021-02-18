@@ -66,48 +66,48 @@ def upload_file(file_name, bucket, object_name=None):
     return True
 
 
-def upload_fileobj(file_name):
+def upload_fileobj(file_name, bucket_name, object_name):
     s3 = boto3.client('s3')
     with open(file_name, "rb") as f:
-        s3.upload_fileobj(f, "BUCKET_NAME", "OBJECT_NAME")
+        s3.upload_fileobj(f, bucket_name, object_name)
 
 
-def download_file(file_name):
+def download_file(file_name, bucket_name, object_name):
     s3 = boto3.client('s3')
-    s3.download_file('BUCKET_NAME', 'OBJECT_NAME', file_name)
+    s3.download_file(bucket_name, object_name, file_name)
 
 
-def download_fileobj(file_name):
+def download_fileobj(file_name, bucket_name, object_name):
     s3 = boto3.client('s3')
     with open(file_name, 'wb') as f:
-        s3.download_fileobj('BUCKET_NAME', 'OBJECT_NAME', f)
+        s3.download_fileobj(bucket_name, object_name, f)
 
 
-def upload_multipart_file(file_name):
+def upload_multipart_file(file_name, bucket_name, object_name):
     # Set the desired multipart threshold value (5GB)
     GB = 1024 ** 3
     config = TransferConfig(multipart_threshold=5*GB)
 
     # Perform the transfer
     s3 = boto3.client('s3')
-    s3.upload_file(file_name, 'BUCKET_NAME', 'OBJECT_NAME', Config=config)
+    s3.upload_file(file_name, bucket_name, object_name, Config=config)
 
 
-def concurrent_download_file(file_name):
+def concurrent_download_file(file_name, bucket_name, object_name):
     # To consume less downstream bandwidth, decrease the maximum concurrency
     config = TransferConfig(max_concurrency=5)
 
     # Download an S3 object
     s3 = boto3.client('s3')
-    s3.download_file('BUCKET_NAME', 'OBJECT_NAME', file_name, Config=config)
+    s3.download_file(bucket_name, object_name, file_name, Config=config)
 
 
-def threaded_download_file(file_name):
+def threaded_download_file(file_name, bucket_name, object_name):
     # Disable thread use/transfer concurrency
     config = TransferConfig(use_threads=True)
 
     s3 = boto3.client('s3')
-    s3.download_file('BUCKET_NAME', 'OBJECT_NAME', file_name, Config=config)
+    s3.download_file(bucket_name, object_name, file_name, Config=config)
 
 
 def create_presigned_url(bucket_name, object_name, expiration=3600):
